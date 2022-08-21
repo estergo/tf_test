@@ -31,3 +31,14 @@ resource "aws_s3_bucket" "data" {
     yor_trace            = "48666bb2-3c3c-45ff-b0df-63bcf2afd22b"
   })
 }
+
+resource "aws_s3_bucket" "data_log_bucket" {
+  bucket = "data-log-bucket"
+}
+
+resource "aws_s3_bucket_logging" "data" {
+  bucket = aws_s3_bucket.data.id
+
+  target_bucket = aws_s3_bucket.data_log_bucket.id
+  target_prefix = "log/"
+}
