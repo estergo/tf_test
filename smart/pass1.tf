@@ -2,6 +2,7 @@ resource "aws_cloudtrail" "cloudtrail1" {
   name                          = "tf-cloudtrail1"
   s3_bucket_name                = "bucket1"
   kms_key_id = "arn:aws:kms:us-east-1:000000000000:key/key1"
+  enable_log_file_validation = true
 }
 
 resource "aws_cloudtrail" "cloudtrail2" {
@@ -14,6 +15,7 @@ resource "aws_cloudtrail" "cloudtrail3" {
   name                          = "tf-cloudtrail3"
   s3_bucket_name                = "bucket3"
   kms_key_id = "arn:aws:kms:us-east-1:000000000000:key/key2"
+  enable_log_file_validation = true
 }
 
 resource "aws_cloudtrail" "cloudtrail4" {
