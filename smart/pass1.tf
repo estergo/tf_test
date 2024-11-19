@@ -20,6 +20,7 @@ resource "aws_cloudtrail" "cloudtrail4" {
   name                          = "tf-cloudtrail4"
   s3_bucket_name                = "bucket4"
   kms_key_id = "arn:aws:kms:us-east-1:000000000000:key/key3"
+  is_multi_region_trail = true
 }
 
 resource "aws_cloudtrail" "cloudtrail5" {
