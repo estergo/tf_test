@@ -54,8 +54,30 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "data" {
   }
 }
 
-resource "aws_s3_bucket" "data_log_bucket" {
-  bucket = "data-log-bucket"
+resource "aws_s3_bucket" "bucket" {
+ bucket = "bucket"
+}
+
+resource "aws_sns_topic" "bucket_notifications" {
+ name = "bucket-notifications"
+}
+
+resource "aws_s3_bucket_notification" "bucket_notification" {
+ bucket = aws_s3_bucket.bucket.id
+
+ topic {
+ topic_arn = aws_sns_topic.bucket_notifications.arn
+ events = ["s3:ObjectCreated:*"]
+ filter_prefix = "logs/"
+ }
+}
+
+resource "aws_s3_bucket_versioning" "example" {
+ bucket = aws_s3_bucket.example.id
+
+ versioning_configuration {
+ status = "Enabled"
+ }
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "data_log_bucket" {
