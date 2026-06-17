@@ -10,12 +10,7 @@ locals {
 }
 
 resource "aws_s3_bucket" "data" {
-  # bucket is public
-  # bucket is not encrypted
-  # bucket does not have access logs
-  # bucket does not have versioning
   bucket        = "${local.resource_prefix.value}-data-ester-dev"
-  acl           = "public-read"
   force_destroy = true
   tags = merge({
     Name        = "${local.resource_prefix.value}-data-ester-dev"
@@ -32,6 +27,14 @@ resource "aws_s3_bucket" "data" {
   })
 }
 
+resource "aws_s3_bucket_public_access_block" "data" {
+  bucket = aws_s3_bucket.data.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
 
 resource "aws_s3_bucket_versioning" "data" {
   bucket = aws_s3_bucket.data.id
@@ -41,22 +44,29 @@ resource "aws_s3_bucket_versioning" "data" {
   }
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "data" {
+  bucket = aws_s3_bucket.data.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+  }
+}
 
 resource "aws_s3_bucket" "data_log_bucket" {
   bucket = "data-log-bucket"
 }
-
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "data_log_bucket" {
   bucket = aws_s3_bucket.data_log_bucket.bucket
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm     = "aws:kms"
+      sse_algorithm = "aws:kms"
     }
   }
 }
-
 
 resource "aws_s3_bucket_logging" "data" {
   bucket = aws_s3_bucket.data.id
