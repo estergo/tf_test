@@ -56,4 +56,6 @@ resource "aws_cloudtrail" "cloudtrail10" {
   name                          = "tf-cloudtrail10"
   s3_bucket_name                = "bucket10"
   kms_key_id = "arn:aws:kms:us-east-1:000000000000:key/key4"
+  is_multi_region_trail = true
+  enable_log_file_validation = true
 }
