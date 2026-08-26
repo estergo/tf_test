@@ -8,6 +8,8 @@ resource "aws_cloudtrail" "cloudtrail2" {
   name                          = "tf-cloudtrail2"
   s3_bucket_name                = "bucket2"
   kms_key_id = "arn:aws:kms:us-east-1:000000000000:key/key2"
+  enable_log_file_validation = true
+  is_multi_region_trail = true
 }
 
 resource "aws_cloudtrail" "cloudtrail3" {
